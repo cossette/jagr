@@ -1,4 +1,4 @@
-jagr
+Jagr
 ====
 
-Stanley Cup winning snapshot baking machine
+Stanley Cup winning CakePHP baking machine
