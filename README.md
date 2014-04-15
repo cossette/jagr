@@ -1,6 +1,6 @@
 # Jagr
 
-Stanley Cup winning CakePHP baking machine
+Jagr scores 30 consecutive goals and bakes CakePHP models and controllers as well as Bootstrap compatible views.
 
 ## Installation
 
