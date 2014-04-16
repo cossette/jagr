@@ -3,7 +3,7 @@
 	$app_folder = '../../../../app/';
 
 	$exclude = array(
-		'App', 'Admin', 'Elements', 'Emails', 'Errors', 'Helper', 'Layouts', 'Pages', 'Scaffolds', 'Tests'
+		'App', 'Admin', 'Elements', 'Emails', 'Errors', 'Helper', 'Layouts', 'Page', 'Pages', 'Services', 'Scaffolds', 'Tests'
 	); 
 	
 	$controllers_dir = $app_folder . 'Controller';
