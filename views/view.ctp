@@ -18,13 +18,13 @@
  */
 ?>
 <?php echo "<?php /* @var \$this View */ ?>\n"; ?>
-<div class="navbar">
-	<div class="navbar-inner">
-		<span class="brand"><?php echo "<?php  echo __d('admin', '{$singularHumanName}'); ?>"; ?></span>
+<div class="navbar navbar-default">
+	<div class="navbar-header">
+		<span class="navbar-brand"><?php echo "<?php  echo __d('admin', '{$singularHumanName}'); ?>"; ?></span>
 	</div>
 </div>
 
-<table class="table table-bordered table-striped table-hover">
+<table class="table table-bordered table-striped table-hover table-condensed">
 	<tbody>
 		<?php foreach ($fields as $field) { ?>
 		
@@ -101,7 +101,7 @@ foreach ($relations as $alias => $details):
 <div class="related">
 	<h3><?php echo "<?php echo __d('admin', 'Related " . $otherPluralHumanName . "'); ?>"; ?></h3>
 	<?php echo "<?php if (!empty(\${$singularVar}['{$alias}'])): ?>\n"; ?>
-	<table class="table table-bordered table-striped table-hover">
+	<table class="table table-bordered table-striped table-hover table-condensed">
 	<thead>
 	<tr>
 <?php
@@ -110,7 +110,7 @@ foreach ($relations as $alias => $details):
 			}
 ?>
 		<th class="actions">
-			<?php echo "<?php echo \$this->Html->link('<i class=\"icon-plus icon-white\"></i> ' . __d('admin', 'New " . Inflector::humanize(Inflector::underscore($alias)) . "'), array('controller' => '{$details['controller']}', 'action' => 'add'), array('class' => 'btn btn-success', 'escape' => false)); ?>"; ?>
+			<?php echo "<?php echo \$this->Html->link('<i class=\"glyphicon glyphicon-plus\"></i> ' . __d('admin', 'New " . Inflector::humanize(Inflector::underscore($alias)) . "'), array('controller' => '{$details['controller']}', 'action' => 'add'), array('class' => 'btn btn-success', 'escape' => false)); ?>"; ?>
 		</th>
 	</tr>
 	</thead>
@@ -125,9 +125,9 @@ echo "\t<?php
 			}
 
 			echo "\t\t\t<td class=\"actions\">\n";
-			echo "\t\t\t\t<?php echo \$this->Html->link('<i class=\"icon-eye-open icon-white\"></i>', array('controller' => '{$details['controller']}', 'action' => 'view', \${$otherSingularVar}['{$details['primaryKey']}']), array('class' => 'btn btn-info', 'escape' => false)); ?>\n";
-			echo "\t\t\t\t<?php echo \$this->Html->link('<i class=\"icon-pencil icon-white\"></i>', array('controller' => '{$details['controller']}', 'action' => 'edit', \${$otherSingularVar}['{$details['primaryKey']}']), array('class' => 'btn btn-primary', 'escape' => false)); ?>\n";
-			echo "\t\t\t\t<?php echo \$this->Form->postLink('<i class=\"icon-remove icon-white\"></i>', array('controller' => '{$details['controller']}', 'action' => 'delete', \${$otherSingularVar}['{$details['primaryKey']}']), array('class' => 'btn btn-danger', 'escape' => false), __d('admin', 'Are you sure you want to delete # %s?', \${$otherSingularVar}['{$details['primaryKey']}'])); ?>\n";
+			echo "\t\t\t\t<?php echo \$this->Html->link('<i class=\"glyphicon glyphicon-eye-open\"></i>', array('controller' => '{$details['controller']}', 'action' => 'view', \${$otherSingularVar}['{$details['primaryKey']}']), array('class' => 'btn btn-info', 'escape' => false)); ?>\n";
+			echo "\t\t\t\t<?php echo \$this->Html->link('<i class=\"glyphicon glyphicon-pencil\"></i>', array('controller' => '{$details['controller']}', 'action' => 'edit', \${$otherSingularVar}['{$details['primaryKey']}']), array('class' => 'btn btn-primary', 'escape' => false)); ?>\n";
+			echo "\t\t\t\t<?php echo \$this->Form->postLink('<i class=\"glyphicon glyphicon-remove\"></i>', array('controller' => '{$details['controller']}', 'action' => 'delete', \${$otherSingularVar}['{$details['primaryKey']}']), array('class' => 'btn btn-danger', 'escape' => false), __d('admin', 'Are you sure you want to delete # %s?', \${$otherSingularVar}['{$details['primaryKey']}'])); ?>\n";
 			echo "\t\t\t</td>\n";
 		echo "\t\t</tr>\n";
 
@@ -137,7 +137,7 @@ echo "\t<?php endforeach; ?>\n";
 	</table>
 <?php echo "<?php else: ?>\n\n"; ?>
 	<div class="actions">
-		<?php echo "<?php echo \$this->Html->link('<i class=\"icon-plus icon-white\"></i> ' . __d('admin', 'New " . Inflector::humanize(Inflector::underscore($alias)) . "'), array('controller' => '{$details['controller']}', 'action' => 'add'), array('class' => 'btn btn-success', 'escape' => false)); ?>"; ?>
+		<?php echo "<?php echo \$this->Html->link('<i class=\"glyphicon glyphicon-plus\"></i> ' . __d('admin', 'New " . Inflector::humanize(Inflector::underscore($alias)) . "'), array('controller' => '{$details['controller']}', 'action' => 'add'), array('class' => 'btn btn-success', 'escape' => false)); ?>"; ?>
 	</div>
 </div>
 <?php echo "<?php endif; ?>\n\n"; ?>

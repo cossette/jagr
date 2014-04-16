@@ -20,9 +20,9 @@
 <?php echo "<?php /* @var \$this View */ ?>\n"; ?>
 <?php echo "<?php echo \$this->Form->create('{$modelClass}', array('class' => 'form-horizontal', 'type' => 'file')); ?>\n"; ?>
 	<fieldset>
-		<div class="navbar">
-			<div class="navbar-inner">
-				<span class="brand"><?php 
+		<div class="navbar navbar-default">
+			<div class="navbar-header">
+				<span class="navbar-brand"><?php 
 						printf(
 							"<?php echo __d('admin', '%s %s'); ?>\n", 
 							trim(Inflector::humanize(
@@ -34,7 +34,7 @@
 			</div>
 		</div>
 		
-<?php
+	<?php
 		foreach ($fields as $field) {
 			if (strpos($action, 'add') !== false && $field == $primaryKey) {
 				continue;
@@ -44,16 +44,18 @@
 		}
 		if (!empty($associations['hasAndBelongsToMany'])) {
 			foreach ($associations['hasAndBelongsToMany'] as $assocName => $assocData) {
-				echo "\t<div class=\"control-group\">\n";
-					echo "\t\t<?php echo \$this->Form->label('{$assocName}', null, array('class' => 'control-label')); ?>\n";
-					echo "\t<div class=\"controls\">\n";
-						echo "\t\t<?php echo \$this->Form->input('{$assocName}', array('label' => false, 'div' => false)); ?>\n";
-					echo "\t</div>\n";
+				echo "\t<div class=\"form-group\">\n";
+					echo "\t\t<?php echo \$this->Form->label('{$assocName}', null, array('class' => 'control-label col-sm-2')); ?>\n";
+					echo "\t\t<?php echo \$this->Form->input('{$assocName}', array('label' => false, 'div' => 'col-sm-4', 'class' => 'form-control')); ?>\n";
 				echo "\t</div>\n";
 			}
 		}
-?>
+	?>
+		
+		<div class="form-group">
+			<?php echo "<?php echo \$this->Form->submit(__d('admin', 'Submit'), array('class' => 'btn btn-primary', 'div' => array('class' => 'col-sm-offset-2 col-sm-10')));?>\n";?>
+		</div>
 	</fieldset>
 <?php
-	echo "<?php echo \$this->Form->end(array('label' => __d('admin', 'Submit'), 'class' => 'btn btn-primary', 'div' => array('class' => 'form-actions'))); ?>\n";
+	echo "<?php echo \$this->Form->end(); ?>\n";
 ?>
