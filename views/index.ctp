@@ -28,36 +28,36 @@ $fields = $filtered_fields;
 ?>
 <?php echo "<?php /* @var \$this View */ ?>\n"; ?>
 
-<div class="navbar">
-	<div class="navbar-inner">
-		<span class="brand"><?php echo "<?php echo __d('admin', '{$pluralHumanName}'); ?>\n"; ?></span>
+<nav class="navbar navbar-default" role="navigation">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<span class="navbar-brand"><?php echo "<?php echo __d('admin', '{$pluralHumanName}'); ?>\n"; ?></span>
+		</div>
 	</div>
-</div>
+</nav>
 
 <div class="results">
 	
-	<div class="pagination">
-		<ul>
+	<ul class="pagination">
+		<?php
+			echo "<?php\n";
+			echo "\t\t\t\techo \$this->Paginator->prev('‹ ' . __d('admin', 'previous'), array('tag' => 'li'), null, array('tag' => 'li', 'class' => 'prev disabled'));\n";
+			echo "\t\t\t\techo \$this->Paginator->numbers(array('separator' => '', 'tag' => 'li'));\n";
+			echo "\t\t\t\techo \$this->Paginator->next(__d('admin', 'next') . ' ›', array('tag' => 'li'), null, array('tag' => 'li', 'class' => 'next disabled'));\n";
+			echo "\t\t\t?>\n";
+		?>
+		<li>
 			<?php
 				echo "<?php\n";
-				echo "\t\t\t\techo \$this->Paginator->prev('‹ ' . __d('admin', 'previous'), array('tag' => 'li'), null, array('tag' => 'li', 'class' => 'prev disabled'));\n";
-				echo "\t\t\t\techo \$this->Paginator->numbers(array('separator' => '', 'tag' => 'li'));\n";
-				echo "\t\t\t\techo \$this->Paginator->next(__d('admin', 'next') . ' ›', array('tag' => 'li'), null, array('tag' => 'li', 'class' => 'next disabled'));\n";
-				echo "\t\t\t?>\n";
+				echo "\t\t\t\t\tif (!empty(\$this->request->params['named']['limit'])) {\n";
+				echo "\t\t\t\t\t\techo \$this->Paginator->link(__d('admin', 'all pages'), array('page' => '1', 'limit' => null), array('tag' => 'li', 'class' => 'next'));\n";
+				echo "\t\t\t\t\t} else {\n";
+				echo "\t\t\t\t\t\techo \$this->Paginator->link(__d('admin', 'all results'), array('page' => '1', 'limit' => 100000), array('tag' => 'li', 'class' => 'next'));\n";
+				echo "\t\t\t\t\t}\n";
+				echo "\t\t\t\t?>\n";
 			?>
-			<li>
-				<?php
-					echo "<?php\n";
-					echo "\t\t\t\t\tif (!empty(\$this->request->params['named']['limit'])) {\n";
-					echo "\t\t\t\t\t\techo \$this->Paginator->link(__d('admin', 'all pages'), array('page' => '1', 'limit' => null), array('tag' => 'li', 'class' => 'next'));\n";
-					echo "\t\t\t\t\t} else {\n";
-					echo "\t\t\t\t\t\techo \$this->Paginator->link(__d('admin', 'all results'), array('page' => '1', 'limit' => 100000), array('tag' => 'li', 'class' => 'next'));\n";
-					echo "\t\t\t\t\t}\n";
-					echo "\t\t\t\t?>\n";
-				?>
-			</li>
-		</ul>
-	</div>
+		</li>
+	</ul>
 	
 	<table class="table table-bordered table-striped">
 		<thead>
@@ -114,26 +114,24 @@ $fields = $filtered_fields;
 	?>"; ?>
 	</p>
 	
-	<div class="pagination">
-		<ul>
+	<ul class="pagination">
+		<?php
+			echo "<?php\n";
+			echo "\t\t\t\techo \$this->Paginator->prev('‹ ' . __d('admin', 'previous'), array('tag' => 'li'), null, array('tag' => 'li', 'class' => 'prev disabled'));\n";
+			echo "\t\t\t\techo \$this->Paginator->numbers(array('separator' => '', 'tag' => 'li'));\n";
+			echo "\t\t\t\techo \$this->Paginator->next(__d('admin', 'next') . ' ›', array('tag' => 'li'), null, array('tag' => 'li', 'class' => 'next disabled'));\n";
+			echo "\t\t\t?>\n";
+		?>
+		<li>
 			<?php
 				echo "<?php\n";
-				echo "\t\t\t\techo \$this->Paginator->prev('‹ ' . __d('admin', 'previous'), array('tag' => 'li'), null, array('tag' => 'li', 'class' => 'prev disabled'));\n";
-				echo "\t\t\t\techo \$this->Paginator->numbers(array('separator' => '', 'tag' => 'li'));\n";
-				echo "\t\t\t\techo \$this->Paginator->next(__d('admin', 'next') . ' ›', array('tag' => 'li'), null, array('tag' => 'li', 'class' => 'next disabled'));\n";
-				echo "\t\t\t?>\n";
+				echo "\t\t\t\t\tif (!empty(\$this->request->params['named']['limit'])) {\n";
+				echo "\t\t\t\t\t\techo \$this->Paginator->link(__d('admin', 'all pages'), array('page' => '1', 'limit' => null), array('tag' => 'li', 'class' => 'next'));\n";
+				echo "\t\t\t\t\t} else {\n";
+				echo "\t\t\t\t\t\techo \$this->Paginator->link(__d('admin', 'all results'), array('page' => '1', 'limit' => 100000), array('tag' => 'li', 'class' => 'next'));\n";
+				echo "\t\t\t\t\t}\n";
+				echo "\t\t\t\t?>\n";
 			?>
-			<li>
-				<?php
-					echo "<?php\n";
-					echo "\t\t\t\t\tif (!empty(\$this->request->params['named']['limit'])) {\n";
-					echo "\t\t\t\t\t\techo \$this->Paginator->link(__d('admin', 'all pages'), array('page' => '1', 'limit' => null), array('tag' => 'li', 'class' => 'next'));\n";
-					echo "\t\t\t\t\t} else {\n";
-					echo "\t\t\t\t\t\techo \$this->Paginator->link(__d('admin', 'all results'), array('page' => '1', 'limit' => 100000), array('tag' => 'li', 'class' => 'next'));\n";
-					echo "\t\t\t\t\t}\n";
-					echo "\t\t\t\t?>\n";
-				?>
-			</li>
-		</ul>
-	</div>
+		</li>
+	</ul>
 </div>
