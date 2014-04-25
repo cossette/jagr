@@ -28,7 +28,6 @@
 	
 	public function beforeFilter() {
 		//$this->page_data['page_title'][] = __('Section title');
-		$this->page_data['addable'] = $this->isAddable;
 		
 		parent::beforeFilter();
 	}
