@@ -35,7 +35,7 @@ $fields = $filtered_fields;
 </div>
 
 <div class="results">
-	<ul class="pagination">
+	<ul class="pagination pagination-sm">
 		<?php
 			echo "<?php\n";
 			echo "\t\t\techo \$this->Paginator->prev('‹ ' . __d('admin', 'previous'), array('tag' => 'li'), null, array('tag' => 'li', 'class' => 'prev disabled'));\n";
@@ -63,7 +63,7 @@ $fields = $filtered_fields;
 				<th><?php echo "<?php echo \$this->Paginator->sort('{$field}'); ?>"; ?></th>
 <?php endforeach; ?>
 				<th class="actions">
-					<?php echo "<?php echo \$this->Html->link('<i class=\"glyphicon glyphicon-plus icon-white\"></i> ' . __d('admin', 'Add'), array('action' => 'add'), array('class' => 'btn btn-success', 'escape' => false)); ?>\n"; ?>
+					<?php echo "<?php echo \$this->Html->link('<i class=\"glyphicon glyphicon-plus icon-white\"></i> ' . __d('admin', 'Add'), array('action' => 'add'), array('class' => 'btn btn-sm btn-success', 'escape' => false)); ?>\n"; ?>
 				</th>
 			</tr>
 		</thead>
@@ -107,7 +107,7 @@ $fields = $filtered_fields;
 		?>\n"; ?>
 	</p>
 	
-	<ul class="pagination">
+	<ul class="pagination pagination-sm">
 		<?php
 			echo "<?php\n";
 			echo "\t\t\techo \$this->Paginator->prev('‹ ' . __d('admin', 'previous'), array('tag' => 'li'), null, array('tag' => 'li', 'class' => 'prev disabled'));\n";
