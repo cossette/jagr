@@ -20,19 +20,29 @@
 <?php echo "<?php /* @var \$this View */ ?>\n"; ?>
 <?php echo "<?php echo \$this->Form->create('{$modelClass}', array('class' => 'form-horizontal', 'type' => 'file')); ?>\n"; ?>
 	<fieldset>
-		<div class="navbar navbar-default">
-			<div class="navbar-header">
-				<span class="navbar-brand"><?php 
-						printf(
-							"<?php echo __d('admin', '%s %s'); ?>\n", 
-							trim(Inflector::humanize(
-								preg_replace('/admin/i', '', $action)
-							)), 
-							$singularHumanName
-						); 
-				?></span>
-			</div>
-		</div>
+		<ol class="breadcrumb">
+			<?php 
+				echo "\t<?php\n";
+				echo "\t\t\tif (!empty(\$admin_menu)) {\n";
+				echo "\t\t\tforeach (\$admin_menu as \$label => \$item):\n";
+				echo "\t\t\tif (!\$item['active']) continue;\n";
+				echo "\t\t?>\n";
+			?>
+				<li class="active">
+					<?php
+						echo "<?php\n";
+						echo "\t\t\t\techo \$this->Html->link(\$label, array( 'controller' => \$item['items'][0]['url'], 'action' => 'index', 'admin' => true));\n";
+						echo "\t\t\t?>\n";
+					?>
+				</li>
+			<?php 
+				echo "\t<?php\n";
+				echo "\t\t\tendforeach;\n";
+				echo "\t\t\t}\n";
+				echo "\t\t?>\n";
+			?>
+			<li><?php echo "<?php echo __d('admin', '{$pluralHumanName}'); ?>"; ?></li>
+		</ol>
 		
 	<?php
 		foreach ($fields as $field) {
