@@ -31,6 +31,7 @@
 	<?php if (preg_match('/picture|photo|image/i', $field)): ?>
 		<?php echo $tabs;?><div class="col-sm-6">
 				<?php echo "{$tabs}<?php echo \$this->Form->input('{$field}', array('type' => 'file', 'label' => false, 'div' => false, 'class' => '' {$value})); ?>\n"; ?>
+				<?php echo "{$tabs}<?php echo \$this->Form->hidden('current_{$field}', array('value' => \$this->data['{$modelClass}']['{$field}']));?>\n";?>
 				<?php echo $tabs;?><p class="help-block">
 					<?php echo $tabs;?><span class="label label-info">
 						<?php echo "{$tabs}<?php echo __d('admin', 'Recommended dimensions : %d pixels wide by %d pixels high', 940, 528); ?>\n"; ?>
