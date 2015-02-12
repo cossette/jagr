@@ -289,7 +289,7 @@ endif;
 					default: ?>
 						
 		$this->actsAs['Uploader.Attachment'] = array(
-			'path' => array(
+			'<?php echo $search;?>' => array(
 				'name'		=> 'format_file_name',
 				'uploadDir'	=> ltrim($this->attachmentPath, '/'),
 				'dbColumn'	=> '<?php echo $search;?>',
