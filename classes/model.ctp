@@ -37,6 +37,11 @@ foreach (array('hasOne', 'belongsTo', 'hasMany', 'hasAndBelongsToMany') as $asso
  */
 class <?php echo $name ?> extends <?php echo $plugin; ?>AppModel {
 
+	/** 
+	 *  Default Containable to all models
+	 */
+	public $actsAs = array('Containable');
+
 <?php if ($useDbConfig != 'default'): ?>
 	/**
 	 * Use database config
@@ -63,26 +68,72 @@ if ($primaryKey !== 'id'): ?>
 
 <?php endif;
 
-if (!$displayField && !empty($validate)) {
+if (!$displayField && !empty($modelFields)) {
 	// Search for a display field in these keywords
-	$search_for = array('name', 'title', 'name_fr', 'name_en');
-	// Get all table fields
-	$fields = array_keys($validate);
+	$search_for = array('name', 'title', 'name_fr', 'name_en', 'title_fr', 'title_en');
 	
 	// Loop through search terms
 	foreach($search_for as $search) {
-		$key = array_search($search, $fields);
+		$key = array_search($search, $modelFields);
 		
 		// If field found, use immediately as display field
 		if ($key !== FALSE) {
-			$displayField = $search;
+			if(preg_match('/_fr$|_en$/', $search)){
+				// Auto remove suffix from display field, because of virtual field
+				$displayField = str_replace(array('_en', '_fr'), '', $search);
+			}else{
+				$displayField = $search;
+			}
 			break;
 		}
 	}
+}
+
+$hasAttachment = false;
+if (!empty($modelFields)){
+	$search_for = array('order', 'visible', 'image', 'file', 'path', 'active');
 	
+	foreach($search_for as $search) {
+		$key = array_search($search, $modelFields);
+		
+		// If field found, use immediately as display field
+		if ($key !== FALSE) :
+			if($search == 'order'): ?>
+				
+	/**
+	 * Default order
+	 *
+	 * @var array
+	 */
+	public $order= array('<?php echo "{$name}.order" ?>' => 'ASC');
+				
+			<?php elseif($search == 'visible' || $search == 'active'): ?>
+				
+	/**
+	 * Default conditions
+	 *
+	 * @var array
+	 */
+	public $defaultConditions= array('<?php echo "{$name}.{$search}" ?>' => 1);
+				
+			<?php else : 
+				if($hasAttachment) continue;
+				$hasAttachment = true;?>
+				
+	/**
+	 * Attachment path
+	 *
+	 * @var array
+	 */
+	public $attachmentPath = '/data/images/<?php echo $name ?>/';
+
+			<?php endif;
+		endif;
+	}
 }
 
 if ($displayField): ?>
+	
 	/**
 	 * Display field
 	 *
@@ -218,22 +269,60 @@ endif;
 ?>
 	
 	public function __construct($id = false, $table = null, $ds = null) {
+	<?php if (!empty($modelFields)){
+		$search_for = array('order', 'image', 'file', 'path');
+		
+		foreach($search_for as $search) {
+			$key = array_search($search, $modelFields);
+			
+			// If field found, use immediately as display field
+			if ($key !== FALSE) :
+				switch($search):
+					case 'order': ?>
+						
+		$this->actsAs['Ordered'] =  array(
+			'field' => 'order',
+			'foreign_key' 	=> ''
+		);
+				
+					<?php break;
+					default: ?>
+						
+		$this->actsAs['Uploader.Attachment'] = array(
+			'path' => array(
+				'name'		=> 'format_file_name',
+				'uploadDir'	=> ltrim($this->attachmentPath, '/'),
+				'dbColumn'	=> '<?php echo $search;?>',
+				'saveAsFilename' => true
+			),
+		);
+						
+				<?php break;
+				endswitch;
+			endif;
+		}
+	}?>
+
 		parent::__construct($id, $table, $ds);
 		
 <?php
 // Add virtual fields for i18n fields (_en & _fr)
-if (!empty($validate)):
-	$fields = array_keys($validate);
+if (!empty($modelFields)):
 	$fields_no_suffix = array();
+	$attachmentFields = array('image', 'file', 'path');
 	
 	$out = "";
-	foreach ($fields as $field):
+	foreach ($modelFields as $field):
 		$field_no_suffix = preg_replace('/_(fr|en)/', '', $field);
 		
 		if (preg_match('/_(fr|en)/', $field) && !in_array($field_no_suffix, $fields_no_suffix)):
 			$out .= "\t\t\$this->virtualFields['{$field_no_suffix}'] = \"{\$this->alias}.{$field_no_suffix}_{\$this->language}\";\n";
 			
 			$fields_no_suffix[] = $field_no_suffix;
+		endif;
+	
+		if(in_array($field, $attachmentFields)):
+			$out .= "\t\t\$this->virtualFields['{$field}'] = \"(IF({\$this->alias}.{$field} LIKE 'http%', {\$this->alias}.{$field}, CONCAT('{\$this->attachmentPath}', {\$this->alias}.{$field})))\";\n";
 		endif;
 		
 	endforeach;
@@ -243,5 +332,71 @@ endif;
 ?>
 		
 	}
+
+
+	/** ------------------------------------------------------------
+	 *    Callbacks
+	-------------------------------------------------------------- */
+
+
+	public function beforeSave($options = array()) {
+		<?php 
+		$fields_no_suffix = array();
+		foreach($modelFields as $field):
+			$field_no_suffix = preg_replace('/_(fr|en)/', '', $field);
+			if(preg_match('/price/', $field) && !in_array($field_no_suffix, $fields_no_suffix)): ?>
+// Convert price to cents
+		if (!empty($this->data[$this->alias]['<?php echo $field_no_suffix;?>'])) {
+			$this->data[$this->alias]['<?php echo $field_no_suffix;?>'] = $this->convertToCents($this->data[$this->alias]['<?php echo $field_no_suffix;?>']);
+		}
+				<?php $fields_no_suffix[] = $field_no_suffix;
+			endif;
+		endforeach;?>
+
+		return parent::beforeSave($options);
+	}
+	
+	public function afterSave($created, $options = array()){
+	
+		parent::afterSave($created, $options);
+	}
+
+	
+	public function afterFind($results, $primary = false) {
+		<?php 
+		$fields_no_suffix = array();
+		$out = "";
+		foreach($modelFields as $field):
+			$field_no_suffix = preg_replace('/_(fr|en)/', '', $field);
+			if(preg_match('/price/', $field) && !in_array($field_no_suffix, $fields_no_suffix)):
+		$out .= "\t// Convert price back to dollars
+		\t\$resultsArray[\$k][\$this->alias]['{$field_no_suffix}'] = CakeNumber::format(
+		\t\t\$result[\$this->alias]['{$field_no_suffix}']/100,
+		\t\tarray('before' => '', 'places' => 2, 'decimals' => '.', 'thousands' => ' ')
+		\t);\n";
+				
+				$fields_no_suffix[] = $field_no_suffix;
+			endif;
+		endforeach;?><?php if(!empty($out)): ?>
+$results = $this->prepareAfterFind($results);
+	
+		foreach ($results as $k => $result) {
+		<?php echo $out;?>
+		}
+		<?php else : ?>
+/*$results = $this->prepareAfterFind($results);
+			
+		foreach ($results as $k => $result) {
+			
+		}*/
+		<?php endif;?>
+
+		return parent::afterFind($results, $primary);
+	}
+
+
+	/** ------------------------------------------------------------
+	 *    Functions
+	-------------------------------------------------------------- */
 
 }

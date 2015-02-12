@@ -18,7 +18,7 @@
  */
 ?>
 	
-	/** ------------------------------------------------------------
+		/** ------------------------------------------------------------
 	 *	Callbacks / Overrides
 	 -------------------------------------------------------------- */
 	
@@ -102,14 +102,14 @@
 			$this-><?php echo $currentModelName; ?>->create();
 			if ($this-><?php echo $currentModelName; ?>->save($this->request->data)) {
 <?php if ($wannaUseSession): ?>
-				$this->Session->setFlash(__d('admin', 'The %s has been saved', __d('admin', '<?php echo strtolower($singularHumanName); ?>')));
+				$this->Session->setFlash(__d('admin', 'The %s has been saved', __d('admin', '<?php echo strtolower($singularHumanName); ?>')), 'alert-success');
 				$this->redirect(array('action' => 'admin_index'));
 <?php else: ?>
 				$this->flash(__d('admin', '%s saved.', __d('admin', '<?php echo ucfirst(strtolower($currentModelName)); ?>')), array('action' => 'index'));
 <?php endif; ?>
 			} else {
 <?php if ($wannaUseSession): ?>
-				$this->Session->setFlash(__d('admin', 'The %s could not be saved. Please, try again.', __d('admin', '<?php echo strtolower($singularHumanName); ?>')));
+				$this->Session->setFlash(__d('admin', 'The %s could not be saved. Please, try again.', __d('admin', '<?php echo strtolower($singularHumanName); ?>')), 'alert-error');
 <?php endif; ?>
 			}
 		}
@@ -147,14 +147,14 @@
 		if ($this->request->is('post') || $this->request->is('put')) {
 			if ($this-><?php echo $currentModelName; ?>->save($this->request->data)) {
 <?php if ($wannaUseSession): ?>
-				$this->Session->setFlash(__d('admin', 'The %s has been saved', __d('admin', '<?php echo strtolower($singularHumanName); ?>')));
+				$this->Session->setFlash(__d('admin', 'The %s has been saved', __d('admin', '<?php echo strtolower($singularHumanName); ?>')), 'alert-success');
 				$this->redirect(array('action' => 'admin_index'));
 <?php else: ?>
 				$this->flash(__d('admin', 'The %s has been saved.', __d('admin', '<?php echo strtolower($singularHumanName); ?>')), array('action' => 'index'));
 <?php endif; ?>
 			} else {
 <?php if ($wannaUseSession): ?>
-				$this->Session->setFlash(__d('admin', 'The %s could not be saved. Please, try again.', __d('admin', '<?php echo strtolower($singularHumanName); ?>')));
+				$this->Session->setFlash(__d('admin', 'The %s could not be saved. Please, try again.', __d('admin', '<?php echo strtolower($singularHumanName); ?>')), 'alert-error');
 <?php endif; ?>
 			}
 		} else {
@@ -195,14 +195,15 @@
 		}
 		if ($this-><?php echo $currentModelName; ?>->delete()) {
 <?php if ($wannaUseSession): ?>
-			$this->Session->setFlash(__d('admin', '%s deleted', __d('admin', '<?php echo ucfirst(strtolower($singularHumanName)); ?>')));
+			$this->Session->setFlash(__d('admin', '%s deleted', __d('admin', '<?php echo ucfirst(strtolower($singularHumanName)); ?>')), 'alert-success');
 			$this->redirect(array('action' => 'admin_index'));
 <?php else: ?>
 			$this->flash(__d('admin', '%s deleted', __d('admin', '<?php echo ucfirst(strtolower($singularHumanName)); ?>')), array('action' => 'index'));
 <?php endif; ?>
 		}
 <?php if ($wannaUseSession): ?>
-		$this->Session->setFlash(__d('admin', '%s was not deleted', __d('admin', '<?php echo ucfirst(strtolower($singularHumanName)); ?>')));
+		$this->Session->setFlash(__d('admin', '%s was not deleted', __d('admin', '<?php echo ucfirst(strtolower($singularHumanName)); ?>')), 
+	'alert-error');
 <?php else: ?>
 		$this->flash(__d('admin', '%s was not deleted', __('admin', '<?php echo ucfirst(strtolower($singularHumanName)); ?>')), array('action' => 'index'));
 <?php endif; ?>

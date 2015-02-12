@@ -62,19 +62,6 @@ class <?php echo $controllerName; ?>Controller extends <?php echo $plugin; ?>App
         echo ");\n\n";
     endif;
 
-    if (count($components)):
-        echo "/**\n * Components\n *\n * @var array\n */\n";
-        echo "\tpublic \$components = array(";
-        for ($i = 0, $len = count($components); $i < $len; $i++):
-            if ($i != $len - 1):
-                echo "'" . Inflector::camelize($components[$i]) . "', ";
-            else:
-                echo "'" . Inflector::camelize($components[$i]) . "'";
-            endif;
-        endfor;
-        echo ");\n\n";
-    endif;
-
     echo trim($actions) . "\n";
 
 endif; ?>

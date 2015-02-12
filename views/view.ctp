@@ -18,30 +18,11 @@
  */
 ?>
 <?php echo "<?php /* @var \$this View */ ?>\n"; ?>
-
-<ol class="breadcrumb">
-	<?php 
-		echo "\t<?php\n";
-		echo "\t\t\tif (!empty(\$admin_menu)) {\n";
-		echo "\t\t\tforeach (\$admin_menu as \$label => \$item):\n";
-		echo "\t\t\tif (!\$item['active']) continue;\n";
-		echo "\t\t?>\n";
-	?>
-		<li class="active">
-			<?php
-				echo "<?php\n";
-				echo "\t\t\t\techo \$this->Html->link(\$label, array( 'controller' => \$item['items'][0]['url'], 'action' => 'index', 'admin' => true));\n";
-				echo "\t\t\t?>\n";
-			?>
-		</li>
-	<?php 
-		echo "\t<?php\n";
-		echo "\t\t\tendforeach;\n";
-		echo "\t\t\t}\n";
-		echo "\t\t?>\n";
-	?>
-	<li><?php echo "<?php echo __d('admin', '{$pluralHumanName}'); ?>"; ?></li>
-</ol>
+<div class="navbar navbar-default">
+	<div class="navbar-header">
+		<span class="navbar-brand"><?php echo "<?php  echo __d('admin', '{$singularHumanName}'); ?>"; ?></span>
+	</div>
+</div>
 
 <table class="table table-bordered table-striped table-hover table-condensed">
 	<tbody>

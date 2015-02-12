@@ -28,32 +28,14 @@ $fields = $filtered_fields;
 ?>
 <?php echo "<?php /* @var \$this View */ ?>\n"; ?>
 
-<ol class="breadcrumb">
-	<?php 
-		echo "\t<?php\n";
-		echo "\t\t\tif (!empty(\$admin_menu)) {\n";
-		echo "\t\t\tforeach (\$admin_menu as \$label => \$item):\n";
-		echo "\t\t\tif (!\$item['active']) continue;\n";
-		echo "\t\t?>\n";
-	?>
-		<li class="active">
-			<?php
-				echo "<?php\n";
-				echo "\t\t\t\techo \$this->Html->link(\$label, array( 'controller' => \$item['items'][0]['url'], 'action' => 'index', 'admin' => true));\n";
-				echo "\t\t\t?>\n";
-			?>
-		</li>
-	<?php 
-		echo "\t<?php\n";
-		echo "\t\t\tendforeach;\n";
-		echo "\t\t\t}\n";
-		echo "\t\t?>\n";
-	?>
-	<li><?php echo "<?php echo __d('admin', '{$pluralHumanName}'); ?>"; ?></li>
-</ol>
+<div class="navbar navbar-default">
+	<div class="navbar-header">
+		<span class="navbar-brand"><?php echo "<?php echo __d('admin', '{$pluralHumanName}'); ?>"; ?></span>
+	</div>
+</div>
 
 <div class="results">
-	<ul class="pagination pagination-sm">
+	<ul class="pagination">
 		<?php
 			echo "<?php\n";
 			echo "\t\t\techo \$this->Paginator->prev('‹ ' . __d('admin', 'previous'), array('tag' => 'li'), null, array('tag' => 'li', 'class' => 'prev disabled'));\n";
@@ -77,11 +59,15 @@ $fields = $filtered_fields;
 	<table class="table table-bordered table-striped table-hover table-condensed table-index">
 		<thead>
 			<tr>
-<?php foreach ($fields as $field):?>
+<?php foreach ($fields as $field):
+	if($field == 'order'):?> 
+				<th class="priority"><?php echo "<?php echo \$this->Paginator->sort('{$field}'); ?>"; ?></th>
+	<?php else:?>
 				<th><?php echo "<?php echo \$this->Paginator->sort('{$field}'); ?>"; ?></th>
+	<?php endif;?>
 <?php endforeach; ?>
 				<th class="actions">
-					<?php echo "<?php echo \$this->Html->link('<i class=\"glyphicon glyphicon-plus icon-white\"></i> ' . __d('admin', 'Add'), array('action' => 'add'), array('class' => 'btn btn-sm btn-success', 'escape' => false)); ?>\n"; ?>
+					<?php echo "<?php echo \$this->Html->link('<i class=\"glyphicon glyphicon-plus icon-white\"></i> ' . __d('admin', 'Add'), array('action' => 'add'), array('class' => 'btn btn-success', 'escape' => false)); ?>\n"; ?>
 				</th>
 			</tr>
 		</thead>
@@ -104,7 +90,16 @@ $fields = $filtered_fields;
 						}
 					}
 					if ($isKey !== true) {
-						echo "\t\t\t\t\t<td><?php echo h(\${$singularVar}['{$modelClass}']['{$field}']); ?>&nbsp;</td>\n";
+						if ($field == 'visible'){
+							echo "\t\t\t\t\t<td><?php echo \$this->Html->check(\${$singularVar}['{$modelClass}']['{$field}']); ?>&nbsp;</td>\n";
+						}elseif($field == 'order'){
+							echo "\t\t\t\t\t<td class=\"priority\">\n";
+							echo "\t\t\t\t\t\t<?php echo \$this->Html->link('<i class=\"glyphicon glyphicon-arrow-up\"></i>', array('action' => 'order', \${$singularVar}['{$modelClass}']['{$primaryKey}'], 'up'), array('class' => 'btn btn-small btn-inverse btn-up no-ajaxy', 'title' => __d('admin', 'Move up'), 'escape' => false)); ?>\n";
+							echo "\t\t\t\t\t\t<?php echo \$this->Html->link('<i class=\"glyphicon glyphicon-arrow-down\"></i>', array('action' => 'order', \${$singularVar}['{$modelClass}']['{$primaryKey}'], 'down'), array('class' => 'btn btn-small btn-inverse btn-down no-ajaxy', 'title' => __d('admin', 'Move up'), 'escape' => false)); ?>\n";
+							echo "\t\t\t\t\t</td>\n";
+						}else{
+							echo "\t\t\t\t\t<td><?php echo h(\${$singularVar}['{$modelClass}']['{$field}']); ?>&nbsp;</td>\n";
+						}
 					}
 				}
 			
@@ -125,7 +120,7 @@ $fields = $filtered_fields;
 		?>\n"; ?>
 	</p>
 	
-	<ul class="pagination pagination-sm">
+	<ul class="pagination">
 		<?php
 			echo "<?php\n";
 			echo "\t\t\techo \$this->Paginator->prev('‹ ' . __d('admin', 'previous'), array('tag' => 'li'), null, array('tag' => 'li', 'class' => 'prev disabled'));\n";
