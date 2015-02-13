@@ -37,11 +37,6 @@ foreach (array('hasOne', 'belongsTo', 'hasMany', 'hasAndBelongsToMany') as $asso
  */
 class <?php echo $name ?> extends <?php echo $plugin; ?>AppModel {
 
-	/** 
-	 *  Default Containable to all models
-	 */
-	public $actsAs = array('Containable');
-
 <?php if ($useDbConfig != 'default'): ?>
 	/**
 	 * Use database config
